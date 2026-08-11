@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { heroBooks } from './assets';
+import BookCover from './BookCover';
 
 export default function FinalCTA() {
   return (
@@ -37,11 +38,13 @@ export default function FinalCTA() {
                 style={{ background: book.accent }}
                 aria-hidden="true"
               />
-              <img
-                src={book.cover}
-                alt={book.title}
-                loading="lazy"
-                className="w-20 sm:w-28 h-auto object-contain rounded-lg border border-white/10 shadow-2xl"
+              <BookCover
+                title={book.title}
+                subtitle={book.subtitle}
+                edition={book.age}
+                accent={book.accent}
+                width="w-20 sm:w-28"
+                height="h-32 sm:h-44"
               />
             </div>
           ))}

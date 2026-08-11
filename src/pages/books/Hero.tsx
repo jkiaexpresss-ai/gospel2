@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { heroBooks } from './assets';
+import BookCover from './BookCover';
 
 /**
  * Immersive hero: three floating 3D-style books, glowing halo,
@@ -48,11 +49,13 @@ export default function Hero() {
                   style={{ background: book.accent }}
                   aria-hidden="true"
                 />
-                <img
-                  src={book.cover}
-                  alt={`${book.title} devotional cover`}
-                  loading="eager"
-                  className="w-28 sm:w-40 lg:w-52 h-auto object-contain rounded-lg border border-white/10 shadow-xl"
+                <BookCover
+                  title={book.title}
+                  subtitle={book.subtitle}
+                  edition={book.age}
+                  accent={book.accent}
+                  width="w-28 sm:w-40 lg:w-52"
+                  height="h-44 sm:h-64 lg:h-80"
                 />
                 {/* light sweep */}
                 <span className="bk-sweep" />

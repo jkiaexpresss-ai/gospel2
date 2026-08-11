@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, Clock } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
 import { collections } from './assets';
+import BookCover from './BookCover';
 
 export default function CollectionCards() {
   return (
@@ -31,11 +32,15 @@ export default function CollectionCards() {
                         'linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(212,175,55,0.10) 100%)',
                     }}
                   />
-                  <img
-                    src={c.cover}
-                    alt={c.title}
-                    loading="lazy"
-                    className="relative h-full w-full object-contain p-4 rounded-lg shadow-xl border border-white/10 transition-transform duration-500"
+                  <BookCover
+                    title={c.title}
+                    subtitle={c.scripture}
+                    volume={c.volume}
+                    edition="Adult"
+                    accent="#D4AF37"
+                    width="w-44"
+                    height="h-64"
+                    className="relative transition-transform duration-500"
                   />
                   <span className="bk-sweep" />
                 </div>
