@@ -6,6 +6,7 @@ const navLinks = [
   { href: '/',               label: 'Home' },
   { href: '/about',          label: 'About' },
   { href: '/devotionals',    label: 'Devotionals' },
+  { href: '/blog',           label: 'Blog' },
   { href: '/books',          label: 'Books' },
   { href: '/free-sample',    label: 'Free Sample' },
   { href: '/prayer-partners',label: 'Prayer Partners' },

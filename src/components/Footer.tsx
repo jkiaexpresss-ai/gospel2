@@ -5,6 +5,7 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/devotionals', label: 'Devotionals' },
+  { href: '/blog', label: 'Blog' },
   { href: '/free-sample', label: 'Free Sample' },
   { href: '/prayer-partners', label: 'Prayer Partners' },
   { href: '/communities', label: 'Communities' },
@@ -18,6 +19,7 @@ const resourceLinks = [
   { href: '/free-sample', label: "Children's Edition" },
   { href: '/prayer-guidelines', label: 'Prayer Guidelines' },
   { href: '/devotionals', label: 'Series Library' },
+  { href: '/blog', label: 'Blog Articles' },
   { href: '/communities', label: 'Communities' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
 ];

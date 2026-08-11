@@ -525,10 +525,11 @@ export default function HomePage() {
             <h2 id="library-heading" className="font-playfair text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">The Devotional Library</h2>
             <p className="text-white/55 text-lg max-w-xl mx-auto">Premium series crafted to take your family deeper into Jesus—one scripture at a time.</p>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               { series:'Series One', title:'I AM', sub:'120 Names of Jesus', available:true, img:'https://images.pexels.com/photos/1111319/pexels-photo-1111319.jpeg?auto=compress&cs=tinysrgb&w=600', desc:"A transformational journey through 120 names and titles of Jesus Christ—from Alpha to Omega, Bread of Life to King of Kings." },
               { series:'Series Two', title:'Full of Grace and Truth', sub:'120 Gospel Encounters', available:false, img:'https://images.pexels.com/photos/415571/pexels-photo-415571.jpeg?auto=compress&cs=tinysrgb&w=600', desc:"Walk through the four Gospels in 120 powerful encounters with Jesus—see Him heal, teach, confront, and rise victorious." },
+              { series:'Series Three', title:'He Entered Before He Came', sub:'50-Day Joshua Series', available:false, img:'https://images.pexels.com/photos/2382909/pexels-photo-2382909.jpeg?auto=compress&cs=tinysrgb&w=600', desc:"Discover how Joshua's story foreshadows Jesus — the Captain of the Lord's Army who entered before He came. 50 days of seeing Christ in the conquest." },
             ].map((s,i)=>(
               <ScrollReveal key={i} delay={i*120}>
                 <div className="premium-card rounded-2xl overflow-hidden ih-card">
@@ -547,7 +548,7 @@ export default function HomePage() {
                     <p className="text-gold-400 font-medium text-sm mb-3">{s.sub}</p>
                     <p className="text-white/55 text-sm leading-relaxed mb-5">{s.desc}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-[0.72rem] text-white/60 bg-white/10 px-3 py-1.5 rounded-full">120 Days</span>
+                      <span className="text-[0.72rem] text-white/60 bg-white/10 px-3 py-1.5 rounded-full">{s.series === 'Series Three' ? '50 Days' : '120 Days'}</span>
                       <Link to="/devotionals" className="text-sm font-semibold text-gold-300 hover:text-gold-200 transition-colors flex items-center gap-1">
                         Learn more <ChevronRight size={14} aria-hidden="true" />
                       </Link>
