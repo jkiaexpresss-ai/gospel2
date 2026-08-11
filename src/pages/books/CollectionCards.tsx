@@ -23,7 +23,7 @@ export default function CollectionCards() {
             <ScrollReveal key={c.id} delay={i * 100}>
               <div className="bk-glass rounded-2xl overflow-hidden h-full group transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/50 hover:shadow-[0_24px_64px_rgba(212,175,55,0.2)]">
                 {/* Book cover */}
-                <div className="relative flex items-center justify-center bg-white/[0.03] border-b border-white/5" style={{ height: 460 }}>
+                <div className="relative flex items-center justify-center bg-white/[0.03] border-b border-white/5 overflow-hidden" style={{ height: 460 }}>
                   <div
                     className="absolute inset-0"
                     style={{
@@ -35,7 +35,7 @@ export default function CollectionCards() {
                     src={c.cover}
                     alt={c.title}
                     loading="lazy"
-                    className="relative max-h-full max-w-full object-contain p-4 rounded-lg shadow-xl border border-white/10 transition-transform duration-500"
+                    className="relative h-full w-full object-contain p-4 rounded-lg shadow-xl border border-white/10 transition-transform duration-500"
                   />
                   <span className="bk-sweep" />
                 </div>

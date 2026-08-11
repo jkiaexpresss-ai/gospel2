@@ -41,7 +41,7 @@ export default function FinalCTA() {
                 src={book.cover}
                 alt={book.title}
                 loading="lazy"
-                className="w-20 sm:w-28 h-28 sm:h-40 object-contain rounded-lg border border-white/10 shadow-2xl"
+                className="w-20 sm:w-28 h-auto object-contain rounded-lg border border-white/10 shadow-2xl"
               />
             </div>
           ))}
