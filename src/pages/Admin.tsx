@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSupabaseClient } from '@/lib/supabase';
-import { Users, Mail, Heart, MessageSquare, BookOpen, RefreshCw, Rocket, ExternalLink, CheckCircle2, AlertCircle, HandHeart, Loader2, LogOut, PenLine } from 'lucide-react';
+import { Users, Mail, Heart, MessageSquare, BookOpen, RefreshCw, Rocket, ExternalLink, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, HandHeart, Loader as Loader2, LogOut, PenLine } from 'lucide-react';
 import BlogManager from './admin/BlogManager';
 
 type FreeSampleLead = { id: string; first_name: string; email: string; source: string; status: string; created_at: string; };
@@ -100,7 +100,7 @@ export default function AdminPage() {
 
     try {
       const supabase = getSupabaseClient();
-      const [l, n, pp, pr, m, d, b] = await Promise.all([
+      const results = await Promise.allSettled([
         supabase.from('free_sample_leads').select('*').order('created_at', { ascending: false }),
         supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false }),
         supabase.from('prayer_partners').select('*').order('created_at', { ascending: false }),
@@ -109,28 +109,53 @@ export default function AdminPage() {
         supabase.from('donations').select('*').order('created_at', { ascending: false }),
         supabase.from('blog_posts').select('*').order('updated_at', { ascending: false }),
       ]);
-      const requestError = [l, n, pp, pr, m, d, b].find((result) => result.error)?.error;
-      if (requestError) throw requestError;
 
-      setLeads(l.data ?? []);
-      setSubs(n.data ?? []);
-      setPartners(pp.data ?? []);
-      setPrayers(pr.data ?? []);
-      setMessages(m.data ?? []);
-      setDonations(d.data ?? []);
-      setBlogPosts(b.data ?? []);
-      setCounts({
-        leads:      l.data?.length    ?? 0,
-        newsletter: n.data?.length    ?? 0,
-        partners:   pp.data?.length   ?? 0,
-        prayers:    pr.data?.length   ?? 0,
-        messages:   m.data?.length    ?? 0,
-        donations:  d.data?.length    ?? 0,
-        blog:       b.data?.length    ?? 0,
+      const labels = ['leads', 'newsletter', 'partners', 'prayers', 'messages', 'donations', 'blog'] as const;
+      const errors: string[] = [];
+      const data: Record<string, unknown[]> = {};
+
+      results.forEach((r, i) => {
+        const label = labels[i];
+        if (r.status === 'fulfilled') {
+          if (r.value.error) {
+            errors.push(`${label}: ${r.value.error.message}`);
+          } else {
+            data[label] = r.value.data ?? [];
+          }
+        } else {
+          errors.push(`${label}: ${r.reason?.message ?? 'fetch failed'}`);
+        }
       });
-    } catch {
+
+      if (errors.length > 0 && Object.keys(data).length === 0) {
+        throw new Error(errors.join('; '));
+      }
+
+      if (errors.length > 0) {
+        setLoadError(`Some sections failed to load: ${errors.join('; ')}`);
+      }
+
+      setLeads((data['leads'] as FreeSampleLead[]) ?? []);
+      setSubs((data['newsletter'] as NewsletterSub[]) ?? []);
+      setPartners((data['partners'] as PrayerPartner[]) ?? []);
+      setPrayers((data['prayers'] as PrayerRequest[]) ?? []);
+      setMessages((data['messages'] as ContactMessage[]) ?? []);
+      setDonations((data['donations'] as Donation[]) ?? []);
+      setBlogPosts((data['blog'] as BlogPost[]) ?? []);
+      setCounts({
+        leads:      data['leads']?.length      ?? 0,
+        newsletter: data['newsletter']?.length ?? 0,
+        partners:   data['partners']?.length   ?? 0,
+        prayers:    data['prayers']?.length    ?? 0,
+        messages:   data['messages']?.length   ?? 0,
+        donations:  data['donations']?.length  ?? 0,
+        blog:       data['blog']?.length       ?? 0,
+      });
+    } catch (err) {
       setLoadError(
-        'Submission data could not be loaded. Please try again.'
+        err instanceof Error && err.message
+          ? `Could not load data: ${err.message}`
+          : 'Submission data could not be loaded. Please try again.'
       );
     } finally {
       setLoading(false);
