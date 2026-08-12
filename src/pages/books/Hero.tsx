@@ -54,6 +54,7 @@ export default function Hero() {
                   subtitle={book.subtitle}
                   edition={book.age}
                   accent={book.accent}
+                  cover={book.cover}
                   width="w-28 sm:w-40 lg:w-52"
                   height="h-44 sm:h-64 lg:h-80"
                 />

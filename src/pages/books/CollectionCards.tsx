@@ -38,9 +38,10 @@ export default function CollectionCards() {
                     volume={c.volume}
                     edition="Adult"
                     accent="#D4AF37"
+                    cover={c.cover}
                     width="w-44"
                     height="h-64"
-                    className="relative transition-transform duration-500"
+                    className="relative transition-transform duration-500 group-hover:scale-105"
                   />
                   <span className="bk-sweep" />
                 </div>

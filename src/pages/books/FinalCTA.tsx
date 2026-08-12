@@ -43,6 +43,7 @@ export default function FinalCTA() {
                 subtitle={book.subtitle}
                 edition={book.age}
                 accent={book.accent}
+                cover={book.cover}
                 width="w-20 sm:w-28"
                 height="h-32 sm:h-44"
               />

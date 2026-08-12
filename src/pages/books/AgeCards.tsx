@@ -56,13 +56,14 @@ export default function AgeCards() {
 
                   <div className="mt-8 flex items-center justify-center rounded-xl bg-white/[0.03] border border-white/5 overflow-hidden" style={{ height: 440 }}>
                     <BookCover
-                      title="He Was Always the Answer"
+                      title="In the Beginning, He Was There"
                       subtitle={card.range}
                       edition={card.age}
                       accent={i === 0 ? '#F59E0B' : i === 1 ? '#3B82F6' : '#D4AF37'}
+                      cover={card.cover}
                       width="w-44"
                       height="h-64"
-                      className="transition-transform duration-500"
+                      className="transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                 </div>

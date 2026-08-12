@@ -20,7 +20,7 @@ export const heroBooks: BookCover[] = [
     subtitle: 'Ages 6–12',
     age: 'Kids',
     accent: '#F59E0B',
-    cover: '/images/books/he_was_always_the_answer(kids_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(kids_version) copy copy.png',
   },
   {
     id: 'teen',
@@ -28,7 +28,7 @@ export const heroBooks: BookCover[] = [
     subtitle: 'Ages 13–18',
     age: 'Teen',
     accent: '#3B82F6',
-    cover: '/images/books/he_was_always_the_answer(teen_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(teen_version) copy copy.png',
   },
   {
     id: 'adult',
@@ -36,7 +36,7 @@ export const heroBooks: BookCover[] = [
     subtitle: 'Ages 19+',
     age: 'Adult',
     accent: '#D4AF37',
-    cover: '/images/books/he_was_always_the_answer(adult_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(adult_version) copy copy.png',
   },
 ];
 
@@ -58,7 +58,7 @@ export const collections: Collection[] = [
     scripture: 'Meeting Jesus throughout Scripture',
     days: 120,
     description: 'A 120-day journey tracing the promise of a Saviour from Genesis to Revelation, revealing Christ on every page.',
-    cover: '/images/books/he_was_always_the_answer(adult_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(adult_version) copy copy.png',
   },
   {
     id: 'torah-1',
@@ -67,7 +67,7 @@ export const collections: Collection[] = [
     scripture: 'Genesis & Exodus',
     days: 100,
     description: 'Walk through the foundations of Scripture and see the Lamb slain before the foundation of the world.',
-    cover: '/images/books/in_the_begining_he_was_there(adult_version).png',
+    cover: '/images/books/in_the_begining_he_was_there(adult_version) copy copy.png',
   },
   {
     id: 'torah-2',
@@ -76,7 +76,7 @@ export const collections: Collection[] = [
     scripture: 'Leviticus & Numbers',
     days: 67,
     description: 'Discover how every sacrifice, feast, and tent peg in the wilderness pointed to the coming Saviour.',
-    cover: '/images/books/in_the_begining_he_was_there(adult_version).png',
+    cover: '/images/books/in_the_begining_he_was_there(adult_version) copy copy.png',
   },
   {
     id: 'psalms',
@@ -121,21 +121,21 @@ export const ageCards: AgeCard[] = [
     age: 'Kids',
     range: 'Age 6–12',
     features: ['Bright illustrations', 'Simple explanations', 'Fun activities', 'Family discussion'],
-    cover: '/images/books/he_was_always_the_answer(kids_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(kids_version) copy copy.png',
   },
   {
     id: 'teen-card',
     age: 'Teen',
     range: 'Age 13–18',
     features: ['Faith in today\'s world', 'Reflection', 'Questions', 'Life application'],
-    cover: '/images/books/he_was_always_the_answer(teen_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(teen_version) copy copy.png',
   },
   {
     id: 'adult-card',
     age: 'Adult',
     range: 'Age 19+',
     features: ['Rich theology', 'Prayer', 'Daily transformation', 'Church study'],
-    cover: '/images/books/he_was_always_the_answer(adult_edition).png',
+    cover: '/images/books/in_the_begining_he_was_there(adult_version) copy copy.png',
   },
 ];
 
