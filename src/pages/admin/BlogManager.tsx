@@ -11,6 +11,7 @@ type BlogPost = {
   cover_image_url: string | null;
   author: string;
   category: string | null;
+  content_type: 'blog' | 'article' | null;
   status: string;
   published_at: string | null;
   created_at: string;
@@ -25,6 +26,7 @@ type FormData = {
   cover_image_url: string;
   author: string;
   category: string;
+  content_type: 'blog' | 'article';
   status: 'draft' | 'published';
 };
 
@@ -36,6 +38,7 @@ const EMPTY_FORM: FormData = {
   cover_image_url: '',
   author: 'In Him Daily',
   category: '',
+  content_type: 'article',
   status: 'draft',
 };
 
@@ -60,10 +63,12 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [message, setMessage] = useState('');
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
   function openCreate() {
     setForm(EMPTY_FORM);
     setEditingId(null);
+    setSlugManuallyEdited(false);
     setShowForm(true);
     setMessage('');
   }
@@ -77,9 +82,11 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
       cover_image_url: post.cover_image_url ?? '',
       author: post.author,
       category: post.category ?? '',
+      content_type: (post.content_type as 'blog' | 'article') ?? 'article',
       status: post.status as 'draft' | 'published',
     });
     setEditingId(post.id);
+    setSlugManuallyEdited(true);
     setShowForm(true);
     setMessage('');
   }
@@ -109,6 +116,7 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
         cover_image_url: form.cover_image_url.trim() || null,
         author: form.author.trim() || 'In Him Daily',
         category: form.category.trim() || null,
+        content_type: form.content_type,
         status: form.status,
         published_at: form.status === 'published' && !editingId ? new Date().toISOString() : undefined,
       };
@@ -168,7 +176,7 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
       <div>
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-playfair text-xl font-bold text-white">
-            {editingId ? 'Edit Article' : 'New Article'}
+            {editingId ? `Edit ${form.content_type === 'blog' ? 'Blog Post' : 'Article'}` : `New ${form.content_type === 'blog' ? 'Blog Post' : 'Article'}`}
           </h3>
           <button
             onClick={() => { setShowForm(false); setEditingId(null); setForm(EMPTY_FORM); }}
@@ -193,7 +201,8 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
                 type="text"
                 value={form.title}
                 onChange={(e) => {
-                  setForm({ ...form, title: e.target.value, slug: editingId ? form.slug : slugify(e.target.value) });
+                  const newSlug = slugManuallyEdited ? form.slug : slugify(e.target.value);
+                  setForm({ ...form, title: e.target.value, slug: newSlug });
                 }}
                 placeholder="Article title"
                 className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-gold-400 transition-colors text-sm"
@@ -204,14 +213,28 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
               <input
                 type="text"
                 value={form.slug}
-                onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                onChange={(e) => {
+                  setSlugManuallyEdited(true);
+                  setForm({ ...form, slug: e.target.value });
+                }}
                 placeholder="article-url-slug"
                 className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-gold-400 transition-colors text-sm font-mono"
               />
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-[0.72rem] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Type</label>
+              <select
+                value={form.content_type}
+                onChange={(e) => setForm({ ...form, content_type: e.target.value as 'blog' | 'article' })}
+                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white focus:outline-none focus:border-gold-400 transition-colors text-sm"
+              >
+                <option value="article" className="bg-[#05070D]">Article</option>
+                <option value="blog" className="bg-[#05070D]">Blog Post</option>
+              </select>
+            </div>
             <div>
               <label className="block text-[0.72rem] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Category</label>
               <input
@@ -222,6 +245,9 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
                 className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-gold-400 transition-colors text-sm"
               />
             </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[0.72rem] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Author</label>
               <input
@@ -286,7 +312,7 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
               className="flex items-center gap-2 px-6 py-3 ih-btn-gold text-sm disabled:opacity-50"
             >
               {saving ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <Save size={15} aria-hidden="true" />}
-              {editingId ? 'Update Article' : 'Create Article'}
+              {editingId ? `Update ${form.content_type === 'blog' ? 'Blog Post' : 'Article'}` : `Create ${form.content_type === 'blog' ? 'Blog Post' : 'Article'}`}
             </button>
             <button
               onClick={() => { setShowForm(false); setEditingId(null); setForm(EMPTY_FORM); }}
@@ -310,7 +336,7 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
           onClick={openCreate}
           className="flex items-center gap-2 px-5 py-2.5 ih-btn-gold text-sm"
         >
-          <Plus size={16} aria-hidden="true" /> New Article
+          <Plus size={16} aria-hidden="true" /> New Post
         </button>
       </div>
 
@@ -357,6 +383,13 @@ export default function BlogManager({ posts, onRefresh }: { posts: BlogPost[]; o
                         : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
                     }`}>
                       {post.status}
+                    </span>
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-[0.65rem] font-semibold border ${
+                      (post.content_type ?? 'article') === 'blog'
+                        ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+                        : 'bg-blue-500/15 text-blue-300 border-blue-500/30'
+                    }`}>
+                      {(post.content_type ?? 'article') === 'blog' ? 'Blog' : 'Article'}
                     </span>
                     {post.category && (
                       <span className="text-[0.65rem] text-white/40 bg-white/10 px-2 py-0.5 rounded-full">

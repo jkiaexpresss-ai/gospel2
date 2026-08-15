@@ -14,6 +14,7 @@ type BlogPost = {
   cover_image_url: string | null;
   author: string;
   category: string | null;
+  content_type: 'blog' | 'article' | null;
   status: string;
   published_at: string | null;
   created_at: string;
@@ -31,6 +32,7 @@ export default function Blog() {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeType, setActiveType] = useState<'all' | 'article' | 'blog'>('all');
 
   useEffect(() => {
     async function load() {
@@ -59,7 +61,8 @@ export default function Blog() {
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       (p.excerpt ?? '').toLowerCase().includes(search.toLowerCase());
     const matchesCategory = !activeCategory || p.category === activeCategory;
-    return matchesSearch && matchesCategory;
+    const matchesType = activeType === 'all' || (p.content_type ?? 'article') === activeType;
+    return matchesSearch && matchesCategory && matchesType;
   });
 
   const featured = filtered[0];
@@ -85,10 +88,10 @@ export default function Blog() {
           <ScrollReveal>
             <p className="ih-eyebrow mb-3">The Blog</p>
             <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight">
-              Articles &amp; Reflections
+              Articles &amp; Blog Posts
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
-              Deepen your faith with articles on Scripture, family devotion, prayer, and the beauty of Christ on every page.
+              Deepen your faith with articles and blog posts on Scripture, family devotion, prayer, and the beauty of Christ on every page.
             </p>
           </ScrollReveal>
         </div>
@@ -109,29 +112,30 @@ export default function Blog() {
                 className="w-full pl-11 pr-4 py-3 rounded-full bg-white/10 border border-white/15 text-white placeholder-white/35 focus:outline-none focus:border-gold-400 transition-colors text-sm"
               />
             </div>
-            {categories.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
+              {(['all', 'article', 'blog'] as const).map((t) => (
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  key={t}
+                  onClick={() => setActiveType(t)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                    !activeCategory ? 'bg-gold-500 text-[#05070D]' : 'bg-white/10 text-white/60 hover:bg-white/15'
+                    activeType === t ? 'bg-gold-500 text-[#05070D]' : 'bg-white/10 text-white/60 hover:bg-white/15'
                   }`}
                 >
-                  All
+                  {t === 'all' ? 'All Posts' : t === 'article' ? 'Articles' : 'Blog Posts'}
                 </button>
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat === activeCategory ? null : cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                      activeCategory === cat ? 'bg-gold-500 text-[#05070D]' : 'bg-white/10 text-white/60 hover:bg-white/15'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
+              ))}
+              {categories.length > 0 && categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat === activeCategory ? null : cat)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                    activeCategory === cat ? 'bg-gold-500 text-[#05070D]' : 'bg-white/10 text-white/60 hover:bg-white/15'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -150,7 +154,7 @@ export default function Blog() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
-              <p className="font-playfair text-2xl text-white/70 mb-2">No articles yet</p>
+              <p className="font-playfair text-2xl text-white/70 mb-2">No posts yet</p>
               <p className="text-white/40 text-sm">Check back soon for new content.</p>
             </div>
           ) : (
@@ -179,6 +183,13 @@ export default function Blog() {
                               {featured.category}
                             </span>
                           )}
+                          <span className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-[0.65rem] font-semibold border ${
+                            (featured.content_type ?? 'article') === 'blog'
+                              ? 'bg-purple-500/30 text-purple-200 border-purple-400/40'
+                              : 'bg-blue-500/30 text-blue-200 border-blue-400/40'
+                          }`}>
+                            {(featured.content_type ?? 'article') === 'blog' ? 'Blog' : 'Article'}
+                          </span>
                         </div>
                         <div className="p-8 flex flex-col justify-center">
                           <div className="flex items-center gap-3 text-white/40 text-xs mb-4">
@@ -231,6 +242,13 @@ export default function Blog() {
                               {post.category}
                             </span>
                           )}
+                          <span className={`absolute top-3 right-3 px-2 py-0.5 rounded-full text-[0.6rem] font-semibold border ${
+                            (post.content_type ?? 'article') === 'blog'
+                              ? 'bg-purple-500/30 text-purple-200 border-purple-400/40'
+                              : 'bg-blue-500/30 text-blue-200 border-blue-400/40'
+                          }`}>
+                            {(post.content_type ?? 'article') === 'blog' ? 'Blog' : 'Article'}
+                          </span>
                         </div>
                         <div className="p-6 flex flex-col flex-1">
                           <div className="flex items-center gap-3 text-white/40 text-[0.7rem] mb-3">

@@ -11,7 +11,7 @@ type PrayerPartner  = { id: string; name: string; email: string; status: string;
 type PrayerRequest  = { id: string; name: string; email: string | null; request: string; status: string; created_at: string; };
 type ContactMessage = { id: string; name: string; email: string; subject: string; message: string; status: string; country: string | null; city_region: string | null; created_at: string; };
 type Donation = { id: string; name: string; email: string; country: string | null; city_region: string | null; amount: number | null; prayer_request: string | null; message: string | null; status: string; created_at: string; };
-type BlogPost = { id: string; title: string; slug: string; excerpt: string | null; content: string; cover_image_url: string | null; author: string; category: string | null; status: string; published_at: string | null; created_at: string; updated_at: string; };
+type BlogPost = { id: string; title: string; slug: string; excerpt: string | null; content: string; cover_image_url: string | null; author: string; category: string | null; content_type: 'blog' | 'article' | null; status: string; published_at: string | null; created_at: string; updated_at: string; };
 type EmailMessage = { id: string; from_email: string; from_name: string | null; to_email: string; subject: string; body_text: string | null; body_html: string | null; direction: 'inbound' | 'outbound'; status: string; in_reply_to: string | null; created_at: string };
 
 type Tab = 'leads' | 'newsletter' | 'partners' | 'prayers' | 'messages' | 'donations' | 'blog' | 'inbox';
