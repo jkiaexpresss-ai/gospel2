@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSupabaseClient } from '@/lib/supabase';
-import { Users, Mail, Heart, MessageSquare, BookOpen, RefreshCw, Rocket, ExternalLink, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, HandHeart, Loader as Loader2, LogOut, PenLine } from 'lucide-react';
+import { Users, Mail, Heart, MessageSquare, BookOpen, RefreshCw, Rocket, ExternalLink, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, HandHeart, Loader as Loader2, LogOut, PenLine, Inbox } from 'lucide-react';
 import BlogManager from './admin/BlogManager';
+import EmailInbox from './admin/EmailInbox';
 
 type FreeSampleLead = { id: string; first_name: string; email: string; source: string; status: string; created_at: string; };
 type NewsletterSub  = { id: string; name: string; email: string; status: string; created_at: string; };
@@ -11,8 +12,9 @@ type PrayerRequest  = { id: string; name: string; email: string | null; request:
 type ContactMessage = { id: string; name: string; email: string; subject: string; message: string; status: string; country: string | null; city_region: string | null; created_at: string; };
 type Donation = { id: string; name: string; email: string; country: string | null; city_region: string | null; amount: number | null; prayer_request: string | null; message: string | null; status: string; created_at: string; };
 type BlogPost = { id: string; title: string; slug: string; excerpt: string | null; content: string; cover_image_url: string | null; author: string; category: string | null; status: string; published_at: string | null; created_at: string; updated_at: string; };
+type EmailMessage = { id: string; from_email: string; from_name: string | null; to_email: string; subject: string; body_text: string | null; body_html: string | null; direction: 'inbound' | 'outbound'; status: string; in_reply_to: string | null; created_at: string };
 
-type Tab = 'leads' | 'newsletter' | 'partners' | 'prayers' | 'messages' | 'donations' | 'blog';
+type Tab = 'leads' | 'newsletter' | 'partners' | 'prayers' | 'messages' | 'donations' | 'blog' | 'inbox';
 
 const TABS: { id: Tab; label: string; icon: React.ElementType; color: string }[] = [
   { id: 'leads',     label: 'Free Sample Leads',    icon: BookOpen,      color: 'text-gold-300' },
@@ -22,6 +24,7 @@ const TABS: { id: Tab; label: string; icon: React.ElementType; color: string }[]
   { id: 'messages',  label: 'Contact Messages',     icon: MessageSquare, color: 'text-gold-300' },
   { id: 'donations', label: 'Donations',             icon: HandHeart,     color: 'text-gold-300' },
   { id: 'blog',      label: 'Blog Articles',        icon: PenLine,       color: 'text-gold-300' },
+  { id: 'inbox',     label: 'Email Inbox',          icon: Inbox,         color: 'text-gold-300' },
 ];
 
 const STATUS_COLORS: Record<string, string> = {
@@ -56,7 +59,7 @@ export default function AdminPage() {
   const [tab,      setTab]      = useState<Tab>('leads');
   const [loading,  setLoading]  = useState(true);
   const [loadError, setLoadError] = useState('');
-  const [counts,   setCounts]   = useState<Record<Tab, number>>({ leads:0, newsletter:0, partners:0, prayers:0, messages:0, donations:0, blog:0 });
+  const [counts,   setCounts]   = useState<Record<Tab, number>>({ leads:0, newsletter:0, partners:0, prayers:0, messages:0, donations:0, blog:0, inbox:0 });
 
   const [leads,    setLeads]    = useState<FreeSampleLead[]>([]);
   const [subs,     setSubs]     = useState<NewsletterSub[]>([]);
@@ -65,6 +68,7 @@ export default function AdminPage() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [donations, setDonations] = useState<Donation[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [emailMessages, setEmailMessages] = useState<EmailMessage[]>([]);
 
   useEffect(() => {
     let mounted = true;
@@ -108,9 +112,10 @@ export default function AdminPage() {
         supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
         supabase.from('donations').select('*').order('created_at', { ascending: false }),
         supabase.from('blog_posts').select('*').order('updated_at', { ascending: false }),
+        supabase.from('email_messages').select('*').order('created_at', { ascending: false }),
       ]);
 
-      const labels = ['leads', 'newsletter', 'partners', 'prayers', 'messages', 'donations', 'blog'] as const;
+      const labels = ['leads', 'newsletter', 'partners', 'prayers', 'messages', 'donations', 'blog', 'inbox'] as const;
       const errors: string[] = [];
       const data: Record<string, unknown[]> = {};
 
@@ -142,6 +147,7 @@ export default function AdminPage() {
       setMessages((data['messages'] as ContactMessage[]) ?? []);
       setDonations((data['donations'] as Donation[]) ?? []);
       setBlogPosts((data['blog'] as BlogPost[]) ?? []);
+      setEmailMessages((data['inbox'] as EmailMessage[]) ?? []);
       setCounts({
         leads:      data['leads']?.length      ?? 0,
         newsletter: data['newsletter']?.length ?? 0,
@@ -150,6 +156,7 @@ export default function AdminPage() {
         messages:   data['messages']?.length   ?? 0,
         donations:  data['donations']?.length  ?? 0,
         blog:       data['blog']?.length       ?? 0,
+        inbox:      data['inbox']?.length      ?? 0,
       });
     } catch (err) {
       setLoadError(
@@ -204,7 +211,7 @@ export default function AdminPage() {
             <p className="text-sm text-amber-200">{loadError}</p>
           </div>
         )}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
           {TABS.map((t) => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={`p-5 rounded-2xl border text-left transition-all duration-200 ${
@@ -345,6 +352,9 @@ export default function AdminPage() {
                 <div className="p-6">
                   <BlogManager posts={blogPosts} onRefresh={loadAll} />
                 </div>
+              )}
+              {tab === 'inbox' && (
+                <EmailInbox emails={emailMessages} onRefresh={loadAll} />
               )}
             </>
           )}
