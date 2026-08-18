@@ -161,20 +161,20 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-32 pt-40">
 
-          {/* Logo badge */}
-          <div className="flex justify-center mb-8 animate-fade-in">
+          {/* Logo badge — reduced ~20%, secondary visual role */}
+          <div className="flex justify-center mb-14 sm:mb-20 animate-fade-in">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full blur-2xl opacity-50" style={{ background: 'radial-gradient(circle, rgba(201,152,58,0.6) 0%, transparent 70%)' }} aria-hidden="true" />
+              <div className="absolute inset-0 rounded-full blur-2xl opacity-40" style={{ background: 'radial-gradient(circle, rgba(201,152,58,0.5) 0%, transparent 70%)' }} aria-hidden="true" />
               <img
                 src="/images/733127106_122096833941384062_9064072413288732878_n.jpg"
                 alt="In Him Daily logo"
-                className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover border-2 border-gold-400/50 shadow-gold-lg"
-                style={{ boxShadow: '0 0 48px rgba(201,152,58,0.45), 0 0 12px rgba(201,152,58,0.25)' }}
+                className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover border-2 border-gold-400/40 shadow-gold-lg"
+                style={{ boxShadow: '0 0 36px rgba(201,152,58,0.35), 0 0 10px rgba(201,152,58,0.20)' }}
               />
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/15 border border-gold-400/30 mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/15 border border-gold-400/30 mb-10 animate-fade-in">
             <Sparkles size={13} className="text-gold-300" aria-hidden="true" />
             <span className="text-gold-200 text-[0.72rem] font-semibold tracking-[0.14em] uppercase">A New Way for Families to Encounter Jesus</span>
           </div>
@@ -184,16 +184,16 @@ export default function HomePage() {
             <span className="text-gold-gradient">Every Day</span>
           </h1>
 
-          <p className="text-white/70 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-white/70 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
             Daily devotionals, Bible reflections, prayer resources, and a community of believers.
             Written for <em className="not-italic text-gold-300">adults, teens, and children</em> — so every generation encounters Jesus together.
           </p>
 
-          <div className="mb-6">
-            <p className="font-cormorant text-lg sm:text-xl text-gold-200 italic leading-relaxed max-w-xl mx-auto">
+          <div className="mb-8 opacity-60">
+            <p className="font-cormorant text-base sm:text-lg text-gold-200/70 italic leading-relaxed max-w-xl mx-auto">
               &ldquo;For you died, and your life is now hidden with Christ in God.&rdquo;
             </p>
-            <p className="text-gold-400 text-[0.72rem] font-semibold tracking-[0.16em] uppercase mt-1">Colossians 3:3</p>
+            <p className="text-gold-400/70 text-[0.68rem] font-semibold tracking-[0.16em] uppercase mt-1">Colossians 3:3</p>
           </div>
 
           <div className="theme-roller mb-10 max-w-2xl mx-auto">
